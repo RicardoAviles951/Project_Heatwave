@@ -3,6 +3,17 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
+public struct GridID
+{
+    public int Row;
+    public int Column;
+
+    public GridID(int row, int column)
+    {
+        this.Row = row;
+        this.Column = column;
+    }
+}
 public class CellBrain : MonoBehaviour
 {
     public enum CellType
@@ -11,11 +22,18 @@ public class CellBrain : MonoBehaviour
         path,
         inactive
     }
+
+    //ID
+    private GridID id;
     //Gizmos Parameters
     public float sizeX = 1.0f;
     public float sizeY = 0.25f;
     public float sizeZ = 1.0f;
     private Vector3 center;
+    public bool useGizmos = false;
+
+    public int row;
+    public int col;
 
     //Renderer for visuals
     private Renderer rend;
@@ -38,15 +56,6 @@ public class CellBrain : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //Get reference to renderer
-        if(rend != null )
-        {
-            Debug.Log("Renderer here");
-        }
-        else
-        {
-            Debug.Log("NO renderer");
-        }
         //Get ref to transform position
         center = transform.position;
 
@@ -63,6 +72,7 @@ public class CellBrain : MonoBehaviour
                 currentColor = inactiveColor;
                 break;
         }
+        rend.material.color = currentColor;
     }
 
     // Update is called once per frame
@@ -73,7 +83,7 @@ public class CellBrain : MonoBehaviour
 
     public void RandomType()
     {
-        int num = Random.Range(0, 2);
+        int num = Random.Range(0, 3);
         Debug.Log("Random num = " + num);
         switch (num)
         {
@@ -95,11 +105,53 @@ public class CellBrain : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        //Set Gizmo properties
-        Gizmos.color = currentColor;
-        Vector3 size = new Vector3(sizeX, sizeY, sizeZ);
+        if (useGizmos)
+        {
+            switch (currentCellType)
+            {
+                case CellType.tower:
+                    currentColor = towerColor;
+                    break;
+                case CellType.path:
+                    currentColor = pathColor;
+                    break;
+                case CellType.inactive:
+                    currentColor = inactiveColor;
+                    break;
+            }
+            //rend.material.color = currentColor;
+            center = transform.position;
+            //Set Gizmo properties
+            Gizmos.color = currentColor;
+            Vector3 size = new Vector3(sizeX, sizeY, sizeZ);
 
-        //Draw Gizmo
-        Gizmos.DrawCube(center, size);   
+            //Draw Gizmo
+            Gizmos.DrawCube(center, size);
+        }
+          
+    }
+
+    public GridID AssignPos(int _row, int _col)
+    {
+        row = _row; 
+        col = _col;
+        id = new GridID(row, col);
+        return id;
+    }
+
+    public void SetTower()
+    {
+        if(currentCellType != CellType.path)
+        {
+            currentCellType = CellType.tower;
+        }
+    }
+
+    public void SetPath()
+    {
+        if(currentCellType != CellType.tower)
+        {
+            currentCellType = CellType.path;
+        }
     }
 }
