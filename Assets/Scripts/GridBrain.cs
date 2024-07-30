@@ -1,12 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Security.Cryptography;
-using System.Xml.Serialization;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class GridBrain : MonoBehaviour
 {
+    public UnityEvent<PathCreator> myEvent;
     public int rows = 10;
     public int columns = 10;
 
@@ -14,13 +13,19 @@ public class GridBrain : MonoBehaviour
     public float paddingZ = 1.0f;
 
     public GameObject cell;
+    public PathCreator pathCreator;
 
     private Dictionary<GridID, GameObject> grid = new Dictionary<GridID, GameObject>();
+    private void Awake()
+    {
+        pathCreator = GetComponent<PathCreator>();
+    }
 
     // Start is called before the first frame update
     void Start()
     {
         GenerateGrid();
+        myEvent.Invoke(pathCreator);
         
     }
 
@@ -412,6 +417,8 @@ public class GridBrain : MonoBehaviour
         if (Obj != null)
         {
             Obj.GetComponent<CellBrain>().currentCellType = CellBrain.CellType.path;
+            Vector3 point = Obj.transform.position;
+            pathCreator.AddPoints(point);
         }
     }
 
