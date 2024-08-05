@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Basic Enemy
   health: 1
-  speed: 1
-  color: {r: 0, g: 0.87283325, b: 1, a: 0}
+  speed: 15
+  color: {r: 1, g: 0.20260975, b: 0, a: 0}

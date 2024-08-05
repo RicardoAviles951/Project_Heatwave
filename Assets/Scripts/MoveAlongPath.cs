@@ -3,19 +3,34 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using System.Drawing;
+using UnityEngine.Events;
 
 public class MoveAlongPath : MonoBehaviour
 {
     public float pathDuration;
+    private PathCreator path;
 
-    public void Move(PathCreator point)
+    private void Awake()
     {
-        transform.DOPath
+        path = FindObjectOfType<PathCreator>();
+    }
+   
+    public void Move()
+    { 
+        if (path != null)
+        {
+            transform.DOPath
             (
-                point.points.ToArray(),
+                path.points.ToArray(),
                 pathDuration,
                 PathType.CatmullRom).SetEase(Ease.Linear
-            ); 
+            );
+        }
+        else
+        {
+            Debug.Log("No points..");
+        }
+        
     }
 
 

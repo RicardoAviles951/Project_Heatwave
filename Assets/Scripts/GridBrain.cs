@@ -1,11 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
+using Random = UnityEngine.Random;
 
 public class GridBrain : MonoBehaviour
 {
-    public UnityEvent<PathCreator> myEvent;
+    
     public int rows = 10;
     public int columns = 10;
 
@@ -13,7 +14,7 @@ public class GridBrain : MonoBehaviour
     public float paddingZ = 1.0f;
 
     public GameObject cell;
-    public PathCreator pathCreator;
+    private PathCreator pathCreator;
 
     private Dictionary<GridID, GameObject> grid = new Dictionary<GridID, GameObject>();
     private void Awake()
@@ -25,7 +26,6 @@ public class GridBrain : MonoBehaviour
     void Start()
     {
         GenerateGrid();
-        myEvent.Invoke(pathCreator);
         
     }
 

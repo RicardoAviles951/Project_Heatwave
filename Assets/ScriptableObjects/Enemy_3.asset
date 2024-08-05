@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: 
   health: 0
-  speed: 0
-  color: {r: 0, g: 0, b: 0, a: 0}
+  speed: 8
+  color: {r: 1, g: 0.9559485, b: 0, a: 0}

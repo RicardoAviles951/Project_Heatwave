@@ -9,11 +9,12 @@ public class EnemyBrain : MonoBehaviour
     private Renderer rend;
     private int health;
     private float speed;
-    
+    private MoveAlongPath pathFinder;
 
     private void Awake()
     {
         rend = GetComponent<Renderer>();  
+        pathFinder = GetComponent<MoveAlongPath>();
     }
 
     // Start is called before the first frame update
@@ -22,11 +23,9 @@ public class EnemyBrain : MonoBehaviour
         health = enemy.health;
         speed = enemy.speed;
         rend.material.color = enemy.color;
+        pathFinder.pathDuration = speed;
+        pathFinder.Move();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    
 }
